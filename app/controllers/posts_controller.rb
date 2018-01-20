@@ -57,6 +57,9 @@ class PostsController < ApplicationController
     end
   end
 
+  def home
+  end
+
   private
 
   def set_post
