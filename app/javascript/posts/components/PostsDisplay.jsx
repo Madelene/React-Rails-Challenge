@@ -1,58 +1,67 @@
-import React from 'react';  
-import { Link } from 'react-router-dom';  
-import queryString from 'query-string';  
-import axios from 'axios';
+import React from 'react'  
+import axios from 'axios'
+import config from '../../js/config.js';
+import Post from './Post'
+import PostNavigation from './PostNavigation'
+import PostFooter from './PostFooter'
+import { 
+  Table, 
+  Header, 
+  Body, 
+  Row, 
+  Heading, 
+  Cell 
+} from '@react-spectre/table'
 
 class PostsDisplay extends React.Component {  
   constructor () {
     super();
     this.state = {
-      post: {}
-    };
-  }
-
-  fetchPost (id) {
-    axios.get( `posts/${id}` )
-        .then(response => {
-          this.setState({ post: response.data });
-        })
-        .catch(error => {
-          console.error(error);
-        });
-  }
-
-  setQuoteIdFromQueryString (qs) {
-    this.qsParams = queryString.parse(qs);
-    if (this.qsParams.post) {
-      // assign post ID from the URL's query string
-      this.postId = Number(this.qsParams.post);
-    } else {
-      this.postId = 1;
-      // update URL in browser to reflect current post in query string
-      this.props.history.push(`/?post=${this.postId}`);
+      posts: []
     }
+    this.fetchPosts = this.fetchPosts.bind(this);
+  }
+
+  fetchPosts () {
+    axios.get(`${config.baseApiUrl}posts`)
+      .then((resp) => {
+        this.setState({ posts: resp.data.posts });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   componentDidMount () {
-    this.setPostIdFromQueryString(this.props.location.search);
-    this.fetchPost(this.postId);
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.setPostIdFromQueryString(nextProps.location.search);
-    this.fetchPost(this.postId);
+    this.fetchPosts();
   }
 
   render () {
-    const nextPostId = Number(this.state.post.id) + 1;
+    const posts = this.state.posts
 
     return (
       <div>
-        <Link to={`/?post=${nextPostId}`}>Next</Link>
-        <p>{this.state.post.title}</p>
-        <p>{this.state.post.factorial}</p>
-        <p>{this.state.post.body}</p>
-        <p>{this.state.post.published}</p>
+        <h3>Posts</h3>
+        <Table hover>
+          <thead>
+            <th>Title</th>
+            <th></th>
+            <th>Body</th>
+            <th>Published</th>
+          </thead>
+          <tbody>
+            {
+              posts.map((post) => {
+                return <tr key={post.id}>
+                  <td>{post.title}</td>
+                  <td>{post.factorial}</td> 
+                  <td>{post.body}</td>
+                  <td>{String(post.published)}</td>  
+                </tr>
+              })
+            }
+          </tbody>
+        </Table>
       </div>
     );
   }
