@@ -37,6 +37,13 @@
     classnames "^2.2.5"
     prop-types "^15.6.0"
 
+"@react-spectre/form@^1.0.0-16":
+  version "1.0.0-16"
+  resolved "https://registry.yarnpkg.com/@react-spectre/form/-/form-1.0.0-16.tgz#d55539540e1ece61d2e67e27fee1ac7c43e6e06a"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.6.0"
+
 "@react-spectre/table@^1.0.0-16":
   version "1.0.0-16"
   resolved "https://registry.yarnpkg.com/@react-spectre/table/-/table-1.0.0-16.tgz#d5444b23459810654f6ab1af23c3ce913297cb2a"
