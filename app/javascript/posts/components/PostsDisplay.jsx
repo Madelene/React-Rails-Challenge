@@ -1,17 +1,11 @@
 import React from 'react'  
 import axios from 'axios'
-import config from '../../js/config.js';
+import config from '../../js/config.js'
 import Post from './Post'
 import PostNavigation from './PostNavigation'
 import PostFooter from './PostFooter'
-import { 
-  Table, 
-  Header, 
-  Body, 
-  Row, 
-  Heading, 
-  Cell 
-} from '@react-spectre/table'
+import { Table } from '@react-spectre/table'
+import { Button } from '@react-spectre/button'
 
 class PostsDisplay extends React.Component {  
   constructor () {
@@ -20,6 +14,7 @@ class PostsDisplay extends React.Component {
       posts: []
     }
     this.fetchPosts = this.fetchPosts.bind(this);
+    this.showPost   = this.showPost.bind(this);
   }
 
   fetchPosts () {
@@ -30,6 +25,16 @@ class PostsDisplay extends React.Component {
       .catch(error => {
         console.error(error);
       });
+  }
+
+  showPost (event,id){
+    axios.get(`${config.baseApiUrl}posts/${id}`)
+    .then((resp) => {
+      this.setState({ post: resp.data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   componentDidMount () {
@@ -44,10 +49,13 @@ class PostsDisplay extends React.Component {
         <h3>Posts</h3>
         <Table hover>
           <thead>
+            <tr>
             <th>Title</th>
             <th></th>
             <th>Body</th>
             <th>Published</th>
+            <th>Edit</th>
+            </tr>
           </thead>
           <tbody>
             {
@@ -56,12 +64,20 @@ class PostsDisplay extends React.Component {
                   <td>{post.title}</td>
                   <td>{post.factorial}</td> 
                   <td>{post.body}</td>
-                  <td>{String(post.published)}</td>  
+                  <td>{String(post.published)}</td> 
+                  <td><Button onClick={ (e) => this.showPost(e, post.id) }>
+                    Click Me!
+                  </Button>
+                  </td>
                 </tr>
               })
             }
           </tbody>
         </Table>
+        <br/>
+        <div>
+          <Post post={this.state.post} />
+        </div>
       </div>
     );
   }

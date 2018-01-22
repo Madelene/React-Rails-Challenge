@@ -4,14 +4,13 @@ import {
   Route
 } from 'react-router-dom'
 import PostsDisplay from './PostsDisplay'
+import Post from './Post'
 
 const App = (props) => (  
   <Router>
     <div>
-      <Route
-        path='/'
-        component={PostsDisplay}
-      />
+      <Route path='/' component={PostsDisplay} />
+      <Route path='/promos/:id' component={Post} />
     </div>
   </Router>
 )
