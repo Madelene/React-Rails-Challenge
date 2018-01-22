@@ -37,6 +37,17 @@ class PostsDisplay extends React.Component {
     });
   }
 
+  deletePost (event,id){
+    axios.get(`${config.baseApiUrl}posts/${id}/disable`)
+    .then((resp) => {
+      this.setState({ post: resp.data });
+      this.fetchPosts();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   componentDidMount () {
     this.fetchPosts();
   }
@@ -55,6 +66,7 @@ class PostsDisplay extends React.Component {
             <th>Body</th>
             <th>Published</th>
             <th>Edit</th>
+            <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -69,6 +81,10 @@ class PostsDisplay extends React.Component {
                     Click Me To See and Edit a Post!
                   </Button>
                   </td>
+                  <td><Button onClick={ (e) => this.deletePost(e, post.id) }>
+                    Delete this Post
+                  </Button>
+                  </td>
                 </tr>
               })
             }
@@ -78,6 +94,7 @@ class PostsDisplay extends React.Component {
         <div>
           <Post 
             post={this.state.post} 
+            fetchPosts={this.fetchPosts}
             showPost={this.showPost}
           />
         </div>
