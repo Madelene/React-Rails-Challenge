@@ -2,8 +2,6 @@ import React from 'react'
 import axios from 'axios'
 import config from '../../js/config.js'
 import Post from './Post'
-import PostNavigation from './PostNavigation'
-import PostFooter from './PostFooter'
 import { Table } from '@react-spectre/table'
 import { Button } from '@react-spectre/button'
 
