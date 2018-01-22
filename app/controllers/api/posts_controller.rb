@@ -1,8 +1,9 @@
 class Api::PostsController < ApplicationController
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:show, :edit, :update, :disable]
+  skip_before_action :verify_authenticity_token
 
   def index
-    @posts = Post.all
+    @posts = Post.active
   end
 
   def show
@@ -37,16 +38,8 @@ class Api::PostsController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if @post.update(post_params)
-        @post.update(factorial: factorial_calculation)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
+    @post.update(post_params)
+    @post.update(factorial: factorial_calculation)
   end
 
   def destroy
@@ -55,6 +48,10 @@ class Api::PostsController < ApplicationController
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def disable
+    @post.update(is_active: false)
   end
 
   def home

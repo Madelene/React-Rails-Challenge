@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :posts
+    get '/posts/:id/disable' => 'posts#disable'
   end
 
 end
