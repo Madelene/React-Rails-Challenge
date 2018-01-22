@@ -66,7 +66,7 @@ class PostsDisplay extends React.Component {
                   <td>{post.body}</td>
                   <td>{String(post.published)}</td> 
                   <td><Button onClick={ (e) => this.showPost(e, post.id) }>
-                    Click Me!
+                    Click Me To See and Edit a Post!
                   </Button>
                   </td>
                 </tr>
@@ -76,7 +76,10 @@ class PostsDisplay extends React.Component {
         </Table>
         <br/>
         <div>
-          <Post post={this.state.post} />
+          <Post 
+            post={this.state.post} 
+            showPost={this.showPost}
+          />
         </div>
       </div>
     );
