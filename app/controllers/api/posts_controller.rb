@@ -25,16 +25,6 @@ class Api::PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.update(factorial: factorial_calculation)
-
-    respond_to do |format|
-      if @post
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
-      else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   def update
@@ -64,6 +54,6 @@ class Api::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :published, :factorial)
+    params.permit(:title, :body, :published, :factorial)
   end
 end
