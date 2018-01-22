@@ -68,7 +68,6 @@ render () {
             placeholder="Create A Title"
             onChange={ (e) => this.handleChange(e, "title") }
           />
-          <th>Factorial:</th>
           <th>Body:</th>
           <Input
             name="body"
