@@ -17,7 +17,7 @@ class Post extends React.Component {
 constructor(props){
   super(props);
   this.state = {
-    id:         parseInt(location.pathname.replace('/posts/','')),
+    // id:         parseInt(location.pathname.replace('/posts/','')),
     title:      this.props.post ? this.props.post.title : '',
     factorial:  this.props.post ? this.props.post.factorial : "",
     body:       this.props.post ? this.props.post.body : '',
@@ -25,13 +25,15 @@ constructor(props){
     updateError: false
   }
   this.editPost = this.editPost.bind(this);
+  this.handleChange = this.handleChange.bind(this);
+  this.fetchPosts = this.props.fetchPosts.bind(this);
   this.showPost = this.props.showPost.bind(this);
 }
 
   editPost(){
     axios({
       method: 'patch',
-      url: `${config.baseApiUrl}posts/${this.state.post.id}`,
+      url: `${config.baseApiUrl}posts/${this.props.post.id}`,
       data: {
         id: this.state.id,
         title: this.state.title,
@@ -44,6 +46,7 @@ constructor(props){
         info: resp.data,
         updateError: false
       });
+      this.fetchPosts();
       this.showPost();
     }).catch((error) => {
       console.log(error)
@@ -74,7 +77,7 @@ render () {
             name="title"
             style={{marginBottom:"8px"}}
             value={ this.state.title }
-            placeholder="Update Title of this Post"
+            placeholder="Update Title"
             onChange={ this.handleChange }
           />
           <th>Factorial: <mark>{ this.props.post ? this.props.post.factorial  : "" }</mark></th>
@@ -87,6 +90,13 @@ render () {
             onChange={ this.handleChange }
           />
           <th>Published: <mark>{ String(this.props.post ? this.props.post.published : "") }</mark></th>
+          <Input
+            name="published"
+            style={{marginBottom:"8px"}}
+            value={ this.state.published }
+            placeholder="true or false"
+            onChange={ this.handleChange }
+          />
         </tr>
         </thead>
       </Table>  
