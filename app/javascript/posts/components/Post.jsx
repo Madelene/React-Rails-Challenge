@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import config from '../../js/config.js'
+import PostCreate from './PostCreate'
 import { Table } from '@react-spectre/table'
 import { FormGroup, 
          Input, 
@@ -17,7 +18,6 @@ class Post extends React.Component {
 constructor(props){
   super(props);
   this.state = {
-    // id:         parseInt(location.pathname.replace('/posts/','')),
     title:      this.props.post ? this.props.post.title : '',
     factorial:  this.props.post ? this.props.post.factorial : "",
     body:       this.props.post ? this.props.post.body : '',
@@ -47,7 +47,6 @@ constructor(props){
         updateError: false
       });
       this.fetchPosts();
-      this.showPost();
     }).catch((error) => {
       console.log(error)
       this.setState({
@@ -106,6 +105,15 @@ render () {
             onClick={ this.editPost }>
             Update Post
           </Button>
+
+          <div>
+                <br/>
+            <PostCreate 
+              post={this.state.post} 
+              fetchPosts={this.fetchPosts}
+              showPost={this.showPost}
+            />
+          </div>
         </div>
       );
     }
