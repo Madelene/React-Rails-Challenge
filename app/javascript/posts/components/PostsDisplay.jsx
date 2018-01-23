@@ -10,9 +10,26 @@ class PostsDisplay extends React.Component {
     super();
     this.state = {
       posts: []
+      // factorial: 1
     }
     this.fetchPosts = this.fetchPosts.bind(this);
     this.showPost   = this.showPost.bind(this);
+    this.createFactorial = this.createFactorial.bind(this);
+  }
+
+  createFactorial(num) {
+    var num = Math.floor(Math.random() * 10) + 1 
+    var result = num;
+      if (num === 0 || num === 1) 
+        return 1; 
+      while (num > 1) { 
+        num--;
+        result *= num;
+      }
+      this.setState({
+        factorial: result
+      });
+      return result; 
   }
 
   fetchPosts () {
@@ -52,6 +69,7 @@ class PostsDisplay extends React.Component {
 
   render () {
     const posts = this.state.posts
+    const factorial = this.state.factorial
 
     return (
       <div>
@@ -94,6 +112,8 @@ class PostsDisplay extends React.Component {
             post={this.state.post} 
             fetchPosts={this.fetchPosts}
             showPost={this.showPost}
+            createFactorial={this.createFactorial}
+            factorial={this.state.factorial}
           />
         </div>
       </div>
