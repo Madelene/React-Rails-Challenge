@@ -23,7 +23,9 @@ constructor(props){
     factorial:  this.props ? this.props.factorial : 1,
     body:       this.props.post ? this.props.post.body : '',
     published:  this.props.post ? this.props.post.published : "",
-    updateError: false
+    updateError: false,
+    true: true,
+    false: false
   }
   this.editPost = this.editPost.bind(this);
   this.handleChange = this.handleChange.bind(this);
@@ -61,7 +63,7 @@ constructor(props){
 
   handleChange (e) {
     var name  = e.target.name
-    var value = e.target.value 
+    var value = e.target.value
     this.setState({
       [name]: value,
       updateError: false
@@ -98,6 +100,7 @@ render () {
             value={ this.state.published }
             onChange={ this.handleChange }
             >
+            <option>Please Select</option>
             <option>true</option>
             <option>false</option>
           </Select>

@@ -20,7 +20,9 @@ constructor(props){
     title:      this.props.post ? this.props.post.title : '',
     factorial:  this.props ? this.props.factorial : 1,
     body:       this.props.post ? this.props.post.body : '',
-    published:  this.props.post ? this.props.post.published : ""
+    published:  this.props.post ? this.props.post.published : "",
+    true: true,
+    false: false
   }
 
   this.handleChange = this.handleChange.bind(this);
@@ -46,7 +48,7 @@ constructor(props){
         title: this.state.title,
         body: this.state.body,
         published: this.state.published,
-        factorial: this.props.factorial
+        factorial: this.props.factorial ? this.props.factorial : 1
       }
     }).then((resp) => {
       this.setState({
@@ -94,6 +96,7 @@ render () {
             value={ this.state.published }
             onChange={ (e) => this.handleChange(e, "published") }
             >
+            <option>Please Select</option>
             <option>true</option>
             <option>false</option>
           </Select>
