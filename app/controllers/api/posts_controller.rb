@@ -23,13 +23,14 @@ class Api::PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
-    @post.update(factorial: factorial_calculation)
+    @post = Post.create(post_params)
+    render json: { post: @post }
+    # @post.update(factorial: factorial_calculation)
   end
 
   def update
     @post.update(post_params)
-    @post.update(factorial: factorial_calculation)
+    # @post.update(factorial: factorial_calculation)
   end
 
   def destroy
@@ -54,6 +55,6 @@ class Api::PostsController < ApplicationController
   end
 
   def post_params
-    params.permit(:title, :body, :published, :factorial)
+    params.require(:post).permit(:title, :body, :published, :factorial)
   end
 end
