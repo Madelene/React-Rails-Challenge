@@ -18,7 +18,7 @@ constructor(props){
   super(props);
   this.state = {
     title:      this.props.post ? this.props.post.title : '',
-    factorial:  this.props.post ? this.props.post.factorial : "",
+    factorial:  this.props ? this.props.factorial : 1,
     body:       this.props.post ? this.props.post.body : '',
     published:  this.props.post ? this.props.post.published : ""
   }
@@ -27,19 +27,31 @@ constructor(props){
   this.fetchPosts = this.props.fetchPosts.bind(this);
   this.showPost = this.props.showPost.bind(this);
   this.addPost = this.addPost.bind(this);
+  this.createFactorial = this.props.createFactorial.bind(this);
 }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.factorial) {
+      this.setState({ factorial: nextProps.factorial });
+    }
+  }
+
   addPost(){
+  	console.log(this.props.factorial);
+  	this.createFactorial();
     axios({
       method: 'post',
       url: `${config.baseApiUrl}posts`,
       data: {
         title: this.state.title,
         body: this.state.body,
-        published: this.state.published
+        published: this.state.published,
+        factorial: this.props.factorial
       }
     }).then((resp) => {
-      this.setState({post: resp.data.post});
+      this.setState({
+      	post: resp.data.post,
+      });
       this.fetchPosts();
     })
     .catch((err) => {
@@ -77,20 +89,21 @@ render () {
             onChange={ (e) => this.handleChange(e, "body") }
           />
           <th>Published:</th>
-          <Input
+          <Select
             name="published"
-            style={{marginBottom:"8px"}}
             value={ this.state.published }
-            placeholder="true or false"
             onChange={ (e) => this.handleChange(e, "published") }
-          />
+            >
+            <option>true</option>
+            <option>false</option>
+          </Select>
         </tr>
         </thead>
       </Table>  
           <br/>
           <Button
             className="btn btn-primary btn-large centerButton"
-            onClick={ this.addPost }>
+            onClick={(event) => { this.addPost(); this.createFactorial();}}>
             Add Post
           </Button>
         </div>
