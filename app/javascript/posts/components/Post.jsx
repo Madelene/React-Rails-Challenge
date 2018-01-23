@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import config from '../../js/config.js'
 import PostCreate from './PostCreate'
+// import Factorial from './Factorial'
 import { Table } from '@react-spectre/table'
 import { FormGroup, 
          Input, 
@@ -19,7 +20,7 @@ constructor(props){
   super(props);
   this.state = {
     title:      this.props.post ? this.props.post.title : '',
-    factorial:  this.props.post ? this.props.post.factorial : "",
+    factorial:  this.props ? this.props.factorial : 1,
     body:       this.props.post ? this.props.post.body : '',
     published:  this.props.post ? this.props.post.published : "",
     updateError: false
@@ -28,22 +29,25 @@ constructor(props){
   this.handleChange = this.handleChange.bind(this);
   this.fetchPosts = this.props.fetchPosts.bind(this);
   this.showPost = this.props.showPost.bind(this);
+  this.createFactorial = this.props.createFactorial.bind(this);
 }
 
-  editPost(){
+  editPost (){
     axios({
       method: 'patch',
       url: `${config.baseApiUrl}posts/${this.props.post.id}`,
       data: {
         id: this.state.id,
         title: this.state.title,
-        factorial: this.state.factorial,
+        factorial: this.props.factorial,
         body: this.state.body,
         published: this.state.published
       }
     }).then((resp) => {
+      this.createFactorial();
       this.setState({
         info: resp.data,
+        factorial: this.state.factorial,
         updateError: false
       });
       this.fetchPosts();
@@ -55,9 +59,9 @@ constructor(props){
     });
   }
 
-  handleChange(e) {
+  handleChange (e) {
     var name  = e.target.name
-    var value = e.target.value
+    var value = e.target.value 
     this.setState({
       [name]: value,
       updateError: false
@@ -76,10 +80,10 @@ render () {
             name="title"
             style={{marginBottom:"8px"}}
             value={ this.state.title }
-            placeholder="Update Title"
+            placeholder={this.props.post ? this.props.post.title : "Update Title"}
             onChange={ this.handleChange }
           />
-          <th>Factorial: <mark>{ this.props.post ? this.props.post.factorial  : "" }</mark></th>
+          <th>Factorial: <mark>{ this.state ? this.state.factorial  : "" }</mark></th>
           <th>Body: <mark>{this.props.post ? this.props.post.body : ""}</mark></th>
           <Input
             name="body"
@@ -88,21 +92,22 @@ render () {
             placeholder="Update Body"
             onChange={ this.handleChange }
           />
-          <th>Published: <mark>{ String(this.props.post ? this.props.post.published : "") }</mark></th>
-          <Input
+          <th>Published: <mark>{ String(this.props.post ? this.props.post.published : true) }</mark></th>
+          <Select
             name="published"
-            style={{marginBottom:"8px"}}
             value={ this.state.published }
-            placeholder="true or false"
             onChange={ this.handleChange }
-          />
+            >
+            <option>true</option>
+            <option>false</option>
+          </Select>
         </tr>
         </thead>
       </Table>  
           <br/>
           <Button
             className="btn btn-primary btn-large centerButton"
-            onClick={ this.editPost }>
+            onClick={(event) => { this.editPost(); this.createFactorial();}}>
             Update Post
           </Button>
 
@@ -112,6 +117,8 @@ render () {
               post={this.state.post} 
               fetchPosts={this.fetchPosts}
               showPost={this.showPost}
+              createFactorial={this.createFactorial}
+              factorial={this.props.factorial}
             />
           </div>
         </div>
